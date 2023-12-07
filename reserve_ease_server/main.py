@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 from pydantic import BaseModel, EmailStr
 
 from reserve_ease_server.connect_supabase import *
@@ -96,3 +97,6 @@ async def create_event(reservation: ReservationData):
         raise HTTPException(status_code=400, detail="データの挿入に失敗しました")
 
     return {"message": "予約が登録されました"}
+
+
+handler = Mangum(app, lifespan="off")
